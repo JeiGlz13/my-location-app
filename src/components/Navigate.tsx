@@ -2,6 +2,8 @@ import Fab from "@mui/material/Fab";
 import { Navigation } from '@mui/icons-material'
 import { useContext } from 'react';
 import { MapContext, PlacesContext } from "../context";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 export const Navigate = () => {
     const {map, isMapReady} = useContext(MapContext);
@@ -16,16 +18,22 @@ export const Navigate = () => {
             center: userLocation
         })
     }
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   return (
     <Fab variant="extended"
     sx = {{
-      top: '5px',
-      right: '10px',
-      position: 'fixed'
+      top: '10px',
+      right: isMobile?'5px':'15px',
+      position: 'fixed',
+      fontSize: isMobile?'0.75rem':'0.9rem',
     }} 
+    size={isMobile ? 'small' : 'large'}
     onClick = {onClick}
      >
-        <Navigation sx={{ mr: 1 }} />
+        <Navigation sx={{ mr: 1 }}
+        fontSize = {isMobile ? 'small' : 'medium'} />
         Mi posicion
     </Fab>
   )

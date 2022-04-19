@@ -2,10 +2,15 @@ import { TextField } from "@mui/material"
 import { ChangeEvent, useRef, useContext } from 'react';
 import { PlacesContext } from '../context';
 import { SearchResult } from "./SearchResult";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const SearchBar = () => {
     const {searchPlacesByTerm} = useContext(PlacesContext);
     const debounceRef = useRef<NodeJS.Timeout>();
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const onQueryChanged = (event: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void =>{
         if(debounceRef.current)
@@ -23,13 +28,14 @@ export const SearchBar = () => {
         variant="filled"
         sx={{
             backgroundColor: 'white',
-            marginRight: '15px',
+            marginRight: isMobile?'5px':'15px',
             borderRadius: '10px',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            fontSize: isMobile?'0.7rem':'0.9rem',
+            width: isMobile?'12rem':'15rem',
         }}
         onChange = {onQueryChanged}
-        // value={name}
-        // onChange={handleChange}
+        size={isMobile ? 'small' : 'medium'}
         />
 
         <SearchResult/>

@@ -8,13 +8,17 @@ import { Feature } from '../interfaces/places';
 
 import './active.css'
 import { Navigation } from '@mui/icons-material';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export const SearchResult = () => {
     const {places, isLoadingPlaces, userLocation} = useContext(PlacesContext);
     const {map, getRouteBeetweenPoints} = useContext(MapContext);
 
     const [activeId, setActiveId] = useState('');
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const onPlaceClick = (place: Feature) =>{
         const [lng, lat] = place.center;
@@ -38,7 +42,7 @@ export const SearchResult = () => {
     }
   return (
         <List sx = {{
-            width: '25%',
+            width: isMobile?'11rem':'25%',
             backgroundColor: places.length > 0?'white':'transparent',
             borderRadius: '15px',
             marginRight: '4px',
@@ -49,15 +53,25 @@ export const SearchResult = () => {
                     <ListItem  disablePadding 
                     onClick ={() => onPlaceClick(place)}
                      >
-                        <ListItemButton>
-                            <ListItemText primary={place.text} secondary = {place.place_name} />
+                        <ListItemButton
+                        sx = {{
+                            padding: isMobile?'4px 8px':'8px 16px',
+                        }} >
+                            <ListItemText 
+                            primary={place.text} secondary = {place.place_name}
+                            sx = {{
+                                fontSize: isMobile?'0.rem':'0.9rem',
+                            }} />
                         </ListItemButton>
                     </ListItem>
 
                     <Button
-                    onClick = {()=>getRoute(place)} sx = {{
-                        marginLeft: '15px'
-                    }} variant="contained" endIcon={<Navigation />}>
+                    onClick = {()=>getRoute(place)}
+                    size = {isMobile?'small':'medium'}
+                    sx = {{
+                        marginLeft: isMobile?'5px':'15px',
+                        fontSize: isMobile?'0.7rem':'0.9rem',
+                    }} variant="contained" endIcon={<Navigation fontSize={isMobile?'small':'medium'} />}>
                         Direcciones
                     </Button>
 
